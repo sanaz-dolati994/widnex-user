@@ -5,10 +5,15 @@ import { useWalletPLData, useWalletRealTimeData } from '../newWallet/useWalletDa
 import ModalLayout from '../layouts/ModalLayout'
 import { ReactComponent as FiatAsset } from '../../pages/wallet/assets/withdraw.svg'
 import { ReactComponent as CoinAsset } from '../../pages/wallet/assets/deposit.svg'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Heading } from '../../styles/newStyles/Dashboard.styled'
 
 export default function WalletOverview({ className, fullHeight = false }) {
+	const location = useLocation()
+	const navigate = useNavigate()
+	const query = new URLSearchParams(location.search)
+	const urltType = query.get('type') || null
+	const urlTab = query.get('tab') || 'coin'
 	const currencyTabs = ['tooman', 'usdt']
 	const [currencyTab, setCurrencyTab] = useState('tooman')
 	const type = currencyTab === 'tooman' ? 'irt' : 'usdt'
@@ -17,7 +22,7 @@ export default function WalletOverview({ className, fullHeight = false }) {
 
 	const { userChange } = useWalletPLData()
 
-	const initialChooseModal = { type: null, open: false }
+	const initialChooseModal = { type: urltType, open: !!urltType, Tab: urlTab }
 	const [chooseModal, setChooseModal] = useState(initialChooseModal)
 	const openModal = (type) => setChooseModal({ type, open: true })
 	const closeModal = () => setChooseModal(initialChooseModal)
@@ -25,8 +30,9 @@ export default function WalletOverview({ className, fullHeight = false }) {
 	return (
 		<>
 			<div
-				className={`rounded-md bg-cBlue dark:border border-pColor text-white p-4 ${className} ${fullHeight ? 'flex flex-col justify-items-stretch h-full' : ''
-					}`}
+				className={`rounded-md bg-cBlue dark:border border-pColor text-white p-4 ${className} ${
+					fullHeight ? 'flex flex-col justify-items-stretch h-full' : ''
+				}`}
 			>
 				<Heading>
 					<h2 className='font-semibold'>
@@ -39,8 +45,9 @@ export default function WalletOverview({ className, fullHeight = false }) {
 							return (
 								<div
 									key={tab}
-									className={`text-center w-1/2 rounded-lg ${active && 'bg-gray-light text-cBlue'
-										} cursor-pointer`}
+									className={`text-center w-1/2 rounded-lg ${
+										active && 'bg-gray-light text-cBlue'
+									} cursor-pointer`}
 									onClick={() => setCurrencyTab(tab)}
 								>
 									<Text tid={tab} className={'text-xs'} />
@@ -77,8 +84,9 @@ export default function WalletOverview({ className, fullHeight = false }) {
 				</div>
 
 				<div
-					className={`${!fullHeight ? 'mx-auto' : 'lg:mt-auto'
-						} mt-5 flex items-center justify-center gap-5`}
+					className={`${
+						!fullHeight ? 'mx-auto' : 'lg:mt-auto'
+					} mt-5 flex items-center justify-center gap-5`}
 				>
 					<div
 						className={
