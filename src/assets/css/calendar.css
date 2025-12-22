@@ -1,0 +1,63 @@
+.Calendar {
+	background: #0d1726 !important;
+	--cl-color-disabled: #c3c5b7 !important;
+	background-color: #0d1726 !important;
+	position: fixed;
+	left: -165px;
+}
+
+@media screen and (max-width: 480px) {
+	.Calendar {
+		font-size: 0.7rem !important;
+	}
+}
+
+.DatePicker {
+	z-index: 1 !important;
+}
+
+.Calendar__monthText,
+.Calendar__yearText,
+.Calendar__weekDays,
+.Calendar__day,
+.Calendar__monthSelectorItemText,
+.Calendar__yearSelectorText {
+	color: #eaecef !important;
+}
+
+.Calendar__monthText:focus,
+.Calendar__yearText:hover,
+.Calendar__yearText:focus,
+.Calendar__day:hover,
+.Calendar__monthText:hover,
+.Calendar__monthSelectorItemText:hover,
+.Calendar__yearSelectorText:hover {
+	background: #4f31c5 !important;
+}
+
+.Calendar__monthSelector,
+.Calendar__yearSelector {
+	background-color: #0d1726 !important;
+}
+
+.Calendar__yearSelectorWrapper::before {
+	background-image: linear-gradient(
+		to top,
+		#0d1726,
+		#0d1726 10%,
+		rgba(245, 245, 245, 0)
+	) !important;
+}
+
+.Calendar__yearSelectorWrapper::after {
+	background-image: linear-gradient(
+		to bottom,
+		#0d1726,
+		#0d1726 10%,
+		rgba(245, 245, 245, 0)
+	) !important;
+}
+
+.calendar-today {
+	color: #a12356 !important;
+}

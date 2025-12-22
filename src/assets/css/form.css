@@ -1,0 +1,41 @@
+.btn {
+    @apply flex flex-nowrap flex-row items-center justify-center gap-2;
+    @apply py-3 px-5 rounded-lg;
+    @apply transition-all;
+
+    /*@apply focus:ring-0 focus:ring-offset-0;*/
+
+    &.btn-rounded {
+        @apply aspect-square p-3.5 rounded-full !important;
+        line-height: 0;
+    }
+
+    &.btn-full {
+        @apply w-full;
+    }
+
+    &.btn-transparent {
+        @apply text-black hover:bg-[rgba(0,0,0,0.1)];
+        @apply dark:text-white dark:hover:bg-[rgba(255,255,255,0.1)];
+    }
+
+    &.btn-primary {
+        @apply bg-info hover:bg-info-hover text-white;
+    }
+
+    &.btn-white {
+        @apply bg-white text-black hover:bg-white-hover focus:bg-white-hover;
+    }
+
+    &.btn-black {
+        @apply bg-black text-white hover:bg-black-hover focus:bg-black-hover;
+    }
+
+    &.btn-dark-secondary {
+        @apply bg-dark-secondary text-white hover:bg-dark-secondary-hover focus:bg-dark-secondary-hover;
+    }
+}
+
+.otc-input-bg {
+    @apply dark:bg-otc-dark bg-otc-light;
+}

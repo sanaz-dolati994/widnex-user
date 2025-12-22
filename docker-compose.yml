@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  frontend_user:
+    image: ${IMAGE}
+    restart: always
+    container_name: frontend-user
+    ports:
+      - 3003:80

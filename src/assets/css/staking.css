@@ -1,0 +1,27 @@
+.main-border {
+    @apply border-[1px] dark:border-card-border border-light-border;
+}
+
+.card-bg {
+    @apply dark:bg-dark bg-white;
+}
+
+.hover-bg {
+    @apply hover:dark:bg-white hover:bg-opacity-10 hover:bg-dark hover:dark:bg-opacity-10;
+}
+
+.active-hover-bg {
+    @apply dark:bg-opacity-10 dark:bg-white bg-gray-light;
+}
+
+.flex-center {
+    @apply flex items-center justify-center;
+}
+
+.line-bg {
+    @apply dark:bg-card-border bg-light-border;
+}
+
+.staking-card-item {
+    @apply bg-[#F4F6F8B2] dark:bg-opacity-10 dark:bg-white;
+}

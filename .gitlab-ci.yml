@@ -1,0 +1,85 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  IMAGE_NAME: "reg.widnex.com/widnex-user"
+  IMAGE_TAG: "$CI_COMMIT_REF_SLUG"
+  IMAGE_REF: "$IMAGE_NAME:$IMAGE_TAG"
+
+.default-build-args:
+  variables:
+    PUBLIC_URL: "/user"
+    REACT_APP_HAS_DEPOSIT_WITH_ID: "1"
+    NODE_TLS_REJECT_UNAUTHORIZED: "1"
+
+.build-template:
+  stage: build
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
+    - >
+      docker build
+      --build-arg PUBLIC_URL="$PUBLIC_URL"
+      --build-arg REACT_APP_HAS_DEPOSIT_WITH_ID="$REACT_APP_HAS_DEPOSIT_WITH_ID"
+      --build-arg REACT_APP_HOME="$REACT_APP_HOME"
+      --build-arg REACT_APP_BASE_URL="$REACT_APP_BASE_URL"
+      --build-arg REACT_APP_BASE_URL_V2="$REACT_APP_BASE_URL_V2"
+      --build-arg REACT_APP_SOCKET_URL="$REACT_APP_SOCKET_URL"
+      --build-arg NODE_TLS_REJECT_UNAUTHORIZED="$NODE_TLS_REJECT_UNAUTHORIZED"
+      -t "$IMAGE_REF" .
+    - docker push "$IMAGE_REF"
+
+# ---------------- Stage Environment ----------------
+build:stage:
+  extends:
+    - .build-template
+    - .default-build-args
+  tags:
+    - stg
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "stage"'
+  variables:
+    REACT_APP_HOME: "https://gifkard.com/"
+    REACT_APP_BASE_URL: "https://api.gifkard.com/v1/"
+    REACT_APP_BASE_URL_V2: "https://api.gifkard.com/v2/"
+    REACT_APP_SOCKET_URL: "https://api.gifkard.com/"
+
+deploy:stage:
+  extends:
+    - .deploy-template
+  tags:
+    - stg
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "stage"'
+
+# ---------------- Master/Prod Environment ----------------
+build:master:
+  extends:
+    - .build-template
+    - .default-build-args
+  tags:
+    - frontend
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+  variables:
+    REACT_APP_HOME: "https://widnex.com/"
+    REACT_APP_BASE_URL: "https://api.widnex.com/v1/"
+    REACT_APP_BASE_URL_V2: "https://api.widnex.com/v2/"
+    REACT_APP_SOCKET_URL: "https://api.widnex.com/"
+
+deploy:master:
+  extends:
+    - .deploy-template
+  tags:
+    - frontend
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+
+# ---------------- Deploy Template ----------------
+.deploy-template:
+  stage: deploy
+  script:
+    - docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+    - docker pull "$IMAGE_REF"
+    - IMAGE="$IMAGE_REF" docker-compose down
+    - IMAGE="$IMAGE_REF" docker-compose up -d

@@ -1,0 +1,3 @@
+.warn-wrapper {
+    @apply bg-gray-light dark:bg-[#202438] dark:text-pColor rounded-md flex items-center gap-x-2 px-4 py-2;
+}
