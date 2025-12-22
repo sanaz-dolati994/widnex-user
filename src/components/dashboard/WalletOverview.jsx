@@ -12,8 +12,13 @@ export default function WalletOverview({ className, fullHeight = false }) {
 	const location = useLocation()
 	const navigate = useNavigate()
 	const query = new URLSearchParams(location.search)
-	const urltType = query.get('type') || null
-	const urlTab = query.get('tab') || 'coin'
+	// const urltType = query.get('type') || null
+	// const urlTab = query.get('tab') || 'coin'
+
+	const searchParams = new URLSearchParams(location.search)
+	const typeFromUrl = searchParams.get('type')
+	const tabFromUrl = searchParams.get('tab')
+
 	const currencyTabs = ['tooman', 'usdt']
 	const [currencyTab, setCurrencyTab] = useState('tooman')
 	const type = currencyTab === 'tooman' ? 'irt' : 'usdt'
@@ -22,10 +27,16 @@ export default function WalletOverview({ className, fullHeight = false }) {
 
 	const { userChange } = useWalletPLData()
 
-	const initialChooseModal = { type: urltType, open: !!urltType, Tab: urlTab }
+	const initialChooseModal = { type: typeFromUrl, open: !!typeFromUrl, tab: tabFromUrl }
 	const [chooseModal, setChooseModal] = useState(initialChooseModal)
-	const openModal = (type) => setChooseModal({ type, open: true })
-	const closeModal = () => setChooseModal(initialChooseModal)
+	const openModal = (type, tab = 'coin') => {
+		setChooseModal({ type, open: true, tab })
+		navigate(`/wallets/${type}?tab=${tab}`, { replace: true })
+	}
+	const closeModal = () => {
+		setChooseModal({ type: null, open: false, tab: 'coin' })
+		navigate('/wallets', { replace: true })
+	}
 
 	return (
 		<>
@@ -115,6 +126,7 @@ export default function WalletOverview({ className, fullHeight = false }) {
 							className={
 								'flex items-center gap-8 w-full hover:bg-slate-800 hover:text-white rounded-md px-3 cursor-pointer'
 							}
+							onClick={() => openModal(chooseModal.type, 'coin')}
 						>
 							<CoinAsset width={114} height={114} />
 							<div className={'flex flex-col gap-2'}>
@@ -129,6 +141,7 @@ export default function WalletOverview({ className, fullHeight = false }) {
 							className={
 								'flex items-center gap-8 w-full hover:bg-slate-800 hover:text-white rounded-md px-3 cursor-pointer'
 							}
+							onClick={() => openModal(chooseModal.type, 'fiat')}
 						>
 							<FiatAsset width={114} height={114} />
 							<div className={'flex flex-col gap-2'}>
