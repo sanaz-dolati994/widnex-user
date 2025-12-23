@@ -18,7 +18,7 @@ import { useTransfers } from '../core/hooks/useTransfers'
 import RFilterLayout from '../components/responsive/layouts/RFilterLayout'
 import { RTransfersTable } from '../components/transfers/RTransfersTable'
 import { TransfersTable } from '../components/transfers/TransfersTable'
-import { useEffect, useRef, useState } from 'react'
+
 import { useSearchParams } from 'react-router-dom'
 
 const SUBNAV = [
@@ -95,7 +95,10 @@ export default function TransfersHistoryPage() {
 							key={tid}
 							ref={(el) => (tabRefs.current[index] = el)}
 							to={href}
-							onClick={setActiveLinkIndex.bind(null, index)}
+							onClick={() => {
+								setActiveLinkIndex(index)
+								setSearchParams({ tab: navItem.tid })
+							}}
 							className={`bg-gray-secondary dark:bg-white/5 ${
 								activeLinkIndex === index
 									? 'text-cBlue bg-gray-light dark:bg-white/5'
