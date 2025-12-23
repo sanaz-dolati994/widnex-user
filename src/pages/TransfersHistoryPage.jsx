@@ -19,7 +19,7 @@ import RFilterLayout from '../components/responsive/layouts/RFilterLayout'
 import { RTransfersTable } from '../components/transfers/RTransfersTable'
 import { TransfersTable } from '../components/transfers/TransfersTable'
 
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 const SUBNAV = [
 	{ href: '/wallets', tid: 'your-balances', Icon: BalancesIcon },
@@ -79,12 +79,11 @@ export default function TransfersHistoryPage() {
 					const Icon = navItem.Icon
 					return (
 						<LinkItemRow
+							as={Link}
+							to={`${navItem.href}?tab=${navItem.tid}`}
 							key={navItem.tid}
 							ref={(el) => (tabRefs.current[index] = el)}
-							onClick={() => {
-								setActiveLinkIndex(index)
-								setSearchParams({ tab: navItem.tid })
-							}}
+							onClick={() => setActiveLinkIndex(index)}
 							className={`text-sm hover:bg-gray-light dark:hover:bg-white/10 transition rounded-lg px-4 ${
 								index === activeLinkIndex ? 'bg-gray-light dark:bg-white/10' : ''
 							}`}
@@ -99,12 +98,11 @@ export default function TransfersHistoryPage() {
 			: SUBNAV.map((navItem, index) => {
 					return (
 						<LinkItemRow
+							as={Link}
+							to={`${navItem.href}?tab=${navItem.tid}`}
 							key={navItem.tid}
 							ref={(el) => (tabRefs.current[index] = el)}
-							onClick={() => {
-								setActiveLinkIndex(index)
-								setSearchParams({ tab: navItem.tid })
-							}}
+							onClick={() => setActiveLinkIndex(index)}
 							className={`bg-gray-secondary dark:bg-white/5 ${
 								activeLinkIndex === index
 									? 'text-cBlue bg-gray-light dark:bg-white/5'
