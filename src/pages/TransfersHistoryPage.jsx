@@ -67,34 +67,40 @@ export default function TransfersHistoryPage() {
 			})
 		}
 	}, [activeLinkIndex, width])
+	useEffect(() => {
+		const tabQuery = searchParams.get('tab')
+		const index = SUBNAV.findIndex((navItem) => navItem.tid === tabQuery)
+		if (index !== -1) setActiveLinkIndex(index)
+	}, [searchParams])
 
 	const renderedItems =
 		width > 1024
 			? SUBNAV.map((navItem, index) => {
-					const { href, Icon, tid } = navItem
+					const Icon = navItem.Icon
 					return (
 						<LinkItemRow
-							key={tid}
-							to={href}
+							key={navItem.tid}
+							ref={(el) => (tabRefs.current[index] = el)}
+							onClick={() => {
+								setActiveLinkIndex(index)
+								setSearchParams({ tab: navItem.tid })
+							}}
 							className={`text-sm hover:bg-gray-light dark:hover:bg-white/10 transition rounded-lg px-4 ${
 								index === activeLinkIndex ? 'bg-gray-light dark:bg-white/10' : ''
 							}`}
 						>
 							<ItemData className='text-sm'>
-								<Icon color={index === activeLinkIndex && '#0773F1'} />
-								<Text tid={tid} />
+								<Icon color={index === activeLinkIndex ? '#0773F1' : undefined} />
+								<Text tid={navItem.tid} />
 							</ItemData>
 						</LinkItemRow>
 					)
 			  })
 			: SUBNAV.map((navItem, index) => {
-					const { href, tid } = navItem
-
 					return (
 						<LinkItemRow
-							key={tid}
+							key={navItem.tid}
 							ref={(el) => (tabRefs.current[index] = el)}
-							to={href}
 							onClick={() => {
 								setActiveLinkIndex(index)
 								setSearchParams({ tab: navItem.tid })
@@ -106,7 +112,7 @@ export default function TransfersHistoryPage() {
 							} text-sm px-4 py-2 rounded-full shrink-0 inline-block`}
 						>
 							<ItemData>
-								<Text tid={tid} />
+								<Text tid={navItem.tid} />
 							</ItemData>
 						</LinkItemRow>
 					)
