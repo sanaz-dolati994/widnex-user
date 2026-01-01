@@ -432,7 +432,6 @@ export default function InternalTransferSubpage() {
 						<ContactsList
 							setReceiverId={(user) => {
 								setShowContacts(false)
-								// اگر user.id وجود داشت از اون استفاده می‌کنیم، وگرنه ایمیل
 								setReceiverId(user.id || user.email)
 							}}
 						/>
