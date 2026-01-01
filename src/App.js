@@ -1,19 +1,16 @@
-import {QueryClientProvider} from 'react-query'
+import React from 'react'
+import { QueryClientProvider } from 'react-query'
 import MainContextProvider from './core/contexts/main'
-import Index from './pages/'
-import './assets/css/pagination.css'
-// import { ReactQueryDevtools } from 'react-query/devtools'
 import WalletContextProvider from './core/contexts/wallet'
-import {useQueryContext} from "./core/contexts/query";
-
-
+import Index from './pages/'
+import { useQueryContext } from './core/contexts/query'
+import './assets/css/pagination.css'
 
 const App = () => {
-	const {queryClient} = useQueryContext()
+	const { queryClient } = useQueryContext()
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			{/*<ReactQueryDevtools />*/}
 			<MainContextProvider>
 				<WalletContextProvider>
 					<Index />

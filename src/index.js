@@ -4,13 +4,15 @@ import './assets/css/index.css'
 import App from './App'
 import reportWebVitals from './core/reportWebVitals'
 import './core/i18n'
-import QueryContextProvider from "./core/contexts/query";
-
+import QueryContextProvider from './core/contexts/query'
+import { BrowserRouter } from 'react-router-dom'
 
 ReactDOM.render(
 	<React.StrictMode>
 		<QueryContextProvider>
-			<App />
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
 		</QueryContextProvider>
 	</React.StrictMode>,
 	document.getElementById('root')
