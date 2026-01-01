@@ -332,7 +332,7 @@ export default function InternalTransferSubpage() {
 										value={receiverId}
 										onChange={(e) => setReceiverId(e.target.value?.trim())}
 										id='receiverId'
-										placeholder='مثلا: Id23784'
+										placeholder='Email یا شناسه کاربری'
 										autoComplete='off'
 										className={`w-2/3 px-4 text-sm rounded-lg bg-transparent outline-none border  h-full placeholder:text-xs placeholder:font-extralight ${
 											validation.errorField && validation.errorField === 'receiverId'
@@ -419,9 +419,9 @@ export default function InternalTransferSubpage() {
 				<ModalLayout open={showContacts} onClose={() => setShowContacts(false)} width={'480px'}>
 					<div className='relative'>
 						<ContactsList
-							setReceiverId={(userId) => {
+							setReceiverId={(user) => {
 								setShowContacts(false)
-								setReceiverId(userId)
+								setReceiverId(user.id || user.email)
 							}}
 						/>
 					</div>
@@ -430,9 +430,10 @@ export default function InternalTransferSubpage() {
 				<MobileModal isOpen={showContacts} onClose={() => setShowContacts(false)}>
 					<div className='relative'>
 						<ContactsList
-							setReceiverId={(userId) => {
+							setReceiverId={(user) => {
 								setShowContacts(false)
-								setReceiverId(userId)
+								// اگر user.id وجود داشت از اون استفاده می‌کنیم، وگرنه ایمیل
+								setReceiverId(user.id || user.email)
 							}}
 						/>
 					</div>
