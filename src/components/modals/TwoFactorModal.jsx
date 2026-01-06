@@ -53,7 +53,7 @@ const TwoFactorModal = ({ open, onSubmit, onClose, cause }) => {
 							<Text tid={'enter-otp-2'} className={'md:text-sm text-xs'} />
 						</div>
 						<div
-							className={'text-lg rounded-lg px-3 py-1 bg-[#4f31c5] text-white cursor-pointer'}
+							className={'text-lg rounded-lg px-3 py-1 bg-blue-600 text-white cursor-pointer'}
 							onClick={onRequestOtp}
 						>
 							<Text tid={isSuccess ? (timer > 0 ? timer : 'resend-code') : 'request-otp'} />
@@ -74,7 +74,7 @@ const TwoFactorModal = ({ open, onSubmit, onClose, cause }) => {
 				<div className={'flex items-center justify-center w-full gap-2 mt-5'}>
 					<div
 						className={
-							'rounded-md border-[1px] dark:border-slate-500 bg-[#4f31c5] min-w-[92px] min-h-[32px] text-sm flex justify-center items-center cursor-pointer text-black'
+							'rounded-md border-[1px] dark:border-slate-500 bg-blue-600 min-w-[92px] min-h-[32px] text-sm flex justify-center items-center cursor-pointer text-black'
 						}
 						onClick={onSubmitFactors}
 					>

@@ -36,18 +36,40 @@ const ProfileSettings = () => {
 	}, [profileSettings])
 
 	const IS_VALID = settings.otp || settings.ga
-
 	const onChangeProfileSettings = (v, type) => {
-		const needValidationTypes = [
-			'onDeposit',
-			'onWithdraw',
-			'onWhiteListWallet',
-			'onWhiteListAccount',
-			'onSettingsUpdate',
-		]
-		if (needValidationTypes.includes(type) && !IS_VALID) return
+		// نمایش مقدار و نوع داده `v` قبل از تبدیل به بولین
+		console.log(`قبل از تبدیل: ${v} (${typeof v})`)
+
+		// اگر پارامتر `type` مربوط به `onWhiteListAccount` بود، آن را به بولین تبدیل می‌کنیم
+		if (type === 'onWhiteListAccount') {
+			// تبدیل مقدار به بولین با استفاده از !! که داده را به true/false تبدیل می‌کند
+			v = typeof v === 'boolean' ? v : v === 'true' || v === true
+		}
+
+		// اگر پارامتر `otp` باشد، مطمئن شویم که آن را به عدد یا رشته‌ی صحیح تبدیل کنیم
+		if (type === 'otp') {
+			// اگر `otp` به صورت رشته ارسال شده باشد، آن را به عدد تبدیل می‌کنیم
+			v = typeof v === 'string' ? parseInt(v) : v
+		}
+
+		// نمایش مقدار و نوع داده `v` بعد از تبدیل به بولین یا عدد
+		console.log(`بعد از تبدیل: ${v} (${typeof v})`)
+
+		// به‌روزرسانی وضعیت `settings` با مقدار جدید
 		setSettings((state) => ({ ...state, [type]: v }))
 	}
+
+	// const onChangeProfileSettings = (v, type) => {
+	// 	const needValidationTypes = [
+	// 		'onDeposit',
+	// 		'onWithdraw',
+	// 		'onWhiteListWallet',
+	// 		'onWhiteListAccount',
+	// 		'onSettingsUpdate',
+	// 	]
+	// 	if (needValidationTypes.includes(type) && !IS_VALID) return
+	// 	setSettings((state) => ({ ...state, [type]: v }))
+	// }
 
 	const { mutate: update, isLoading } = useUpdateProfileSettings()
 	const onUpdateSettings = () => {
@@ -58,18 +80,32 @@ const ProfileSettings = () => {
 			onOperationClicked()
 		}
 	}
-
 	const onOperationClicked = (authData) => {
 		const payload = {
 			settings: {
 				twoFactor: settings,
 			},
 		}
+		// اضافه کردن مقادیر OTP و GA به payload
 		if (authData?.otp) payload.otp = authData.otp
 		if (authData?.ga) payload.ga = authData.ga
+
+		// اینجا باید درخواست POST/PUT ارسال شود
 		update(payload)
 		refetch()
 	}
+
+	// const onOperationClicked = (authData) => {
+	// 	const payload = {
+	// 		settings: {
+	// 			twoFactor: settings,
+	// 		},
+	// 	}
+	// 	if (authData?.otp) payload.otp = authData.otp
+	// 	if (authData?.ga) payload.ga = authData.ga
+	// 	update(payload)
+	// 	refetch()
+	// }
 
 	const [authModal, setAuthModal] = useState(false)
 	const onSubmitTwoFactorModal = (authData) => {
